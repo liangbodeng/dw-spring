@@ -1,0 +1,95 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "DW/Spring Integration"
+  },
+  "basePath": "/ws",
+  "tags": [
+    {
+      "name": "echo"
+    },
+    {
+      "name": "upperEcho"
+    }
+  ],
+  "paths": {
+    "/echo": {
+      "get": {
+        "tags": [
+          "echo"
+        ],
+        "summary": "Echo text N times",
+        "description": "",
+        "operationId": "",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "description": "The text to be echoed",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "description": "how many times to echo",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/upperEcho": {
+      "get": {
+        "tags": [
+          "upperEcho"
+        ],
+        "summary": "Echo text in uppercase N times",
+        "description": "",
+        "operationId": "",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "description": "The text to be echoed",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "description": "how many times to echo",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

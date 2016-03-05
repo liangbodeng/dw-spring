@@ -1,0 +1,168 @@
+server:
+  # The minimum number of threads to keep running to process
+  # incoming HTTP requests.
+  minThreads: 8
+
+  # The maximum number of threads to keep running to process
+  # incoming HTTP requests.
+  maxThreads: 1024
+
+  # The root path for the Jersey servlet.
+  rootPath: "/ws/*"
+
+  # If non-zero, the server will allow worker threads to finish
+  # processing requests after the server socket has been closed for
+  # the given amount of time.
+  shutdownGracePeriod: 2s
+
+  allowedMethods: 
+    - GET
+    - POST
+    - DELETE
+    - OPTIONS
+    - REQUEST_DISPATCH
+    
+  applicationConnectors:
+    - type: http
+      port: 7072
+      # The maximum amount of time a connection is allowed to be idle
+      # before being closed.
+      idleTimeout: 30 seconds
+
+      # The number of threads dedicated to accepting connections.
+      acceptorThreads: 1
+
+     # The maximum size of the buffer pool.
+      maxBufferPoolSize: 64KiB
+
+      # The size of the per-connection input buffer.
+      inputBufferSize: 8KiB
+
+      # The maximum size of a request header.
+      maxRequestHeaderSize: 8KiB
+
+      # The initial buffer size for writing responses.
+      outputBufferSize: 32KiB
+
+      # The maximum size of a response header. 
+      maxResponseHeaderSize: 8KiB
+
+      # Enables SO_REUSEADDR on the server socket.
+      reuseAddress: true
+
+      # Enables SO_LINGER on the server socket with the specified
+      # linger time. By default, uses the system default.
+      soLingerTime: null
+
+      # If true, allows usage of the Server header in responses.
+      useServerHeader: false
+
+      # If true, allows usage of the Date header in responses.
+      useDateHeader: true
+
+      # If true, the HTTP server will prefer X-Forwarded headers over
+      # their non-forwarded equivalents.
+      useForwardedHeaders: true
+
+      # The hostname of the interface to which the HTTP server socket
+      # will be bound. If omitted, the socket will listen on all
+      # interfaces.
+      bindHost: null
+
+  adminConnectors:
+    - type: http
+      port: 7073
+
+  # Configuration parameters for GZIP encoding of response entities.
+  gzip:
+
+    # If true, all requests with gzip in their
+    # Accept-Content-Encoding headers will have their response
+    # entities encoded with gzip.
+    enabled: true
+
+    # All response entities under this size are not compressed.
+    minimumEntitySize: 256 bytes
+
+    # The size of the buffer to use when compressing.
+    bufferSize: 8KiB
+
+    # The set of user agents to exclude from compression.
+    excludedUserAgents: []
+
+    # If specified, the set of mime types to compress.
+    compressedMimeTypes: []
+
+# Logging settings.
+logging:
+  appenders:
+    - type: file
+      threshold: ALL
+      logFormat: "%d{HH:mm:ss.SSS} [%thread] %-5level [%logger{0}] - %msg%n"
+      currentLogFilename: ./logs/app.log
+      archivedLogFilenamePattern: ./logs/app-%d.log.gz
+      archivedFileCount: 5
+      timeZone: UTC
+    - type: console
+      logFormat: "%d{HH:mm:ss.SSS} [%thread] %-5level [%logger{0}] - %msg%n"
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO,
+  # DEBUG, TRACE, or ALL
+  level: DEBUG
+
+  # Logger-specific levels.
+  loggers:
+
+    com.example: DEBUG
+    org.hibernate: WARN
+    org.eclipse.jetty.http.HttpParser: WARN
+    org.eclipse.jetty.io.nio: WARN
+    org.eclipse.jetty.io: WARN
+    org.eclipse.jetty.server.handler: WARN
+    org.eclipse.jetty.server.handler.ContextHandler: WARN
+    org.eclipse.jetty.server.Server: WARN
+    org.eclipse.jetty.servlet.ServletHandler: WARN
+    org.eclipse.jetty.server.AbstractHttpConnection: WARN
+    org.eclipse.jetty.util.component: WARN
+    org.eclipse.jetty.server.HttpConnection: WARN
+
+database:
+  # the name of your JDBC driver
+  driverClass: org.h2.Driver
+
+  # the username
+  user: sa
+
+  # the password
+  password: sa
+
+  # the JDBC URL
+  url: jdbc:h2:mem:DW;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: true
+
+  # how long a connection must be held before it can be validated
+  validationInterval: 10s
+
+  # the maximum lifetime of an idle connection
+  minIdleTime: 1 minute
+
+auth:
+  secret: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANVEB4AtItjFuLjmlPfg1ELn1wg2X+FIt49fzqr4A5BCRN7uDvnRY11pq5AibZHfpND7yY3KLETP8ilwPCgNtoHjOsFoE2ue5Wm/bJsBhtkL7rnfBQNUHOJqGKCixVIQ8FwEqtltyzEMWzA2rvYzOOBNbWLhkHlJllF7CXv68bQ/AgMBAAECgYAdy3dQzP2FU3pPOsetKdf90O4V06LpkoMyoKv67tNwoBGHI7Mr67j6H/08EdNFAf3AxKyQBqLQqkymxWtiHShWE+L1GhAZEjrflDDBNhayAX0DtDQC5udJ+hdVZ/LNTXqElhYL6sUSqlRhSIeL4uX4Y+59X/PcVdPL5HR7s1Yq4QJBAOqRmz5AwQhKJ+ieZ8TDcqAf+bnP2Bmrhlbtua1Bxbl4aTbwUKMour/3ON1JLKVbBT0l1g3whsEEQDypZ/7KgzsCQQDowCkK6/dbVU6dbDCV5tm45Gn+vjJqlZIqnf+yEakwN86NAw/e2Y8IFVqjE5LohC44A4PsToU4J4xfIjoD7frNAkBCeA5AvsK0YacbcL/A7w1tOIJgV/hJleRUf7rM0MWBwBA4hDKleWYp/Zk8g37GQJukbzNP8eeNjHHTfsG8XpB/AkEA0PlHYHEAxFZRoXI0JUMCFMmwiXKHnb7xX6ZAn8bPm2Vf5KftJe88Rsu1d1npuy6CuPQfDJprbkHD/N6kLEcNuQJBAIbfXHOQAIC6zOztYKM8EtPr2KJfh+FAmvkHZzs1Dtzlzka579vTnNIxQnr+eZiOCYziOox5MlfKFx0fK4tlAzQ=
+  expireMins: 30
+
+# Automatically validates or exports schema DDL to the database (validate | update | create | create-drop)
+hbm2ddlAuto: update
